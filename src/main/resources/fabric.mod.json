@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "${id}",
+  "name": "${name}",
+  "version": "${version}",
+  "description": "${description}",
+  "authors": [
+    "Tectonic"
+  ],
+  "contact": {
+    "repo": "https://github.com/Tectonic/BetterFabric"
+  },
+  "icon": "deleteMEandADD_icon",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.github.tectonic.betterfabric.client.BetterFabricClient"
+    ],
+    "main": [
+      "com.github.tectonic.betterfabric.BetterFabric"
+    ]
+  },
+  "mixins": [
+    "betterfabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

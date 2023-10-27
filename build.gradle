@@ -1,0 +1,63 @@
+plugins {
+    id 'fabric-loom' version '1.2-SNAPSHOT'
+}
+
+archivesBaseName = project.name
+version = '1.0'
+description = 'description'
+group = 'com.github.tectonic'
+
+repositories {
+    // Essential Maven/Minecraft Libraries are auto configured
+    maven {
+        url = "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1"
+    }
+    maven {
+        name = "modrinth"
+        url = "https://api.modrinth.com/maven"
+    }
+}
+
+dependencies {
+    // Change versions in gradle.properties
+
+    // Minecraft : Client & Loom Offical Mappings
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+
+    // Fabric : API is optional but useful
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    // Development : IDE Only
+    modRuntimeOnly "me.djtheredstoner:DevAuth-fabric:1.1.2"
+    modImplementation "maven.modrinth:sodium:mc1.20.2-0.5.3"
+    modRuntimeOnly "maven.modrinth:modmenu:8.0.0"
+}
+
+def fabricPropertys = [
+    "id": project.name.toLowerCase(),
+    "name": project.name,
+    "version": project.version,
+    "description": project.description,
+    "minecraft_version": project.minecraft_version,
+    "loader_version": project.loader_version
+]
+
+processResources {
+    inputs.properties fabricPropertys
+    filteringCharset "UTF-8"
+
+    filesMatching("fabric.mod.json") {
+        expand fabricPropertys
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+
+    // Required : Generate Source Remapped
+    withSourcesJar()
+}
